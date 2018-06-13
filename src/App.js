@@ -6,6 +6,7 @@ import moment from 'moment';
 import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
+import './react-datepicker.css';
 import Event from './Event';
 
 class App extends Component {

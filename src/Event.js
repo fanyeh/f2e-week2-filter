@@ -66,10 +66,13 @@ class Event extends Component {
             })}
           </TagWrapper>
           <div>
-            <StyledLabel htmlFor="">
-              <i className="fas fa-map-marker-alt" />
-              {this.state.city}
-            </StyledLabel>
+            {this.state.city && (
+              <StyledLabel htmlFor="">
+                <i className="fas fa-map-marker-alt" />
+                {this.state.city}
+              </StyledLabel>
+            )}
+
             <StyledLabel htmlFor="">
               <i className="far fa-calendar-alt" />
               {this.formattedDate(event)}
