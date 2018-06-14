@@ -1,37 +1,25 @@
 import React, { Component } from 'react';
-import './App.css';
-import { getCategories, searchEventsWith, getSubCategories } from './api';
+import { getCategories, getSubCategories } from './api';
 import styled from 'styled-components';
-import moment from 'moment';
-import 'react-dates/initialize';
+import Event from './Event';
+import EventFilter from './EventFilter';
 import { DateRangePicker } from 'react-dates';
+import 'react-dates/initialize';
+import './App.css';
 import 'react-dates/lib/css/_datepicker.css';
 import './react-datepicker.css';
-import Event from './Event';
 
 class App extends Component {
   state = {
     categories: [],
-    events: [],
-    pageCount: 1,
     startDate: null,
     endDate: null,
     focusedInput: null,
   };
 
-  selectedCategories = [];
   subCategories = {};
-  filter = {
-    categories: [],
-    price: '',
-    date: {
-      start: '',
-      end: '',
-    },
-  };
 
   componentDidMount() {
-    this.updateEvents();
     this.setCategories();
     this.setSubCategories();
   }
@@ -54,45 +42,8 @@ class App extends Component {
     });
   };
 
-  /**
-   * Retrieve events
-   */
-
-  updateEvents = async () => {
-    const response = await searchEventsWith(this.filter);
-    const { events, pagination } = response.data;
-    this.setState({ events: events, pageCount: pagination.page_count });
-  };
-
-  /**
-   * Handlers
-   */
-
-  priceHandler = e => {
-    this.filter.price = e.target.value;
-    this.updateEvents();
-  };
-
-  categoryHandler = e => {
-    const categoryID = e.target.value;
-    const indexOfID = this.selectedCategories.indexOf(categoryID);
-    indexOfID > -1
-      ? this.selectedCategories.splice(indexOfID, 1)
-      : this.selectedCategories.push(categoryID);
-
-    this.filter.categories = this.selectedCategories;
-    this.updateEvents();
-  };
-
-  dateHandler = ({ startDate, endDate }) => {
-    if (startDate) {
-      this.filter.date.start = moment.utc(startDate).format();
-    }
-
-    if (endDate) {
-      this.filter.date.end = moment.utc(endDate).format();
-    }
-    this.updateEvents();
+  dateHandler = ({ startDate, endDate }, filterHandler) => {
+    filterHandler({ startDate, endDate });
     this.setState({ startDate, endDate });
   };
 
@@ -101,63 +52,73 @@ class App extends Component {
    */
 
   render() {
-    const { categories, events, pageCount } = this.state;
+    const { categories } = this.state;
     return (
-      <div className="App">
-        <StyledHeader>
-          <div>search input</div>
-        </StyledHeader>
+      <EventFilter>
+        {filter => {
+          return (
+            <div className="App">
+              <StyledHeader>
+                <div>search input</div>
+              </StyledHeader>
 
-        <StyledMain>
-          <SectionSideBar>
-            {/* DatePicker */}
-            <SideBarWrapper>
-              <DateRangePicker
-                startDate={this.state.startDate}
-                startDateId="eventStart"
-                endDate={this.state.endDate}
-                endDateId="eventEnd"
-                onDatesChange={this.dateHandler}
-                focusedInput={this.state.focusedInput}
-                onFocusChange={focusedInput => this.setState({ focusedInput })}
-              />
+              <StyledMain>
+                <SectionSideBar>
+                  {/* DatePicker */}
+                  <SideBarWrapper>
+                    <DateRangePicker
+                      startDate={this.state.startDate}
+                      startDateId="eventStart"
+                      endDate={this.state.endDate}
+                      endDateId="eventEnd"
+                      onDatesChange={dates => this.dateHandler(dates, filter.dateHandler)}
+                      focusedInput={this.state.focusedInput}
+                      onFocusChange={focusedInput => this.setState({ focusedInput })}
+                    />
 
-              {/* Price */}
-              <div>
-                <label htmlFor="">Price</label>
-                <select onChange={this.priceHandler}>
-                  <option value="">Free & Paid</option>
-                  <option value="free">Free</option>
-                  <option value="paid">Paid</option>
-                </select>
-              </div>
-              {/* Categories */}
-              <div>
-                {categories.map(category => (
-                  <div key={category.id}>
-                    <input type="checkbox" onChange={this.categoryHandler} value={category.id} />
-                    <label>{category.short_name}</label>
-                  </div>
-                ))}
-              </div>
-            </SideBarWrapper>
-          </SectionSideBar>
-          <SectionEvent>
-            {/* Events */}
-            {events.map(event => (
-              <Event
-                key={event.id}
-                event={event}
-                categories={this.state.categories}
-                subCategories={this.subCategories}
-              />
-            ))}
-          </SectionEvent>
-        </StyledMain>
+                    {/* Price */}
+                    <div>
+                      <label htmlFor="">Price</label>
+                      <select onChange={filter.priceHandler}>
+                        <option value="">Free & Paid</option>
+                        <option value="free">Free</option>
+                        <option value="paid">Paid</option>
+                      </select>
+                    </div>
+                    {/* Categories */}
+                    <div>
+                      {categories.map(category => (
+                        <div key={category.id}>
+                          <input
+                            type="checkbox"
+                            onChange={filter.categoryHandler}
+                            value={category.id}
+                          />
+                          <label>{category.short_name}</label>
+                        </div>
+                      ))}
+                    </div>
+                  </SideBarWrapper>
+                </SectionSideBar>
+                <SectionEvent>
+                  {/* Events */}
+                  {filter.events.map(event => (
+                    <Event
+                      key={event.id}
+                      event={event}
+                      categories={this.state.categories}
+                      subCategories={this.subCategories}
+                    />
+                  ))}
+                </SectionEvent>
+              </StyledMain>
 
-        {/* Pagination */}
-        <div>PageCount: {pageCount} pages</div>
-      </div>
+              {/* Pagination */}
+              <div>PageCount: {filter.pagination.page_count} pages</div>
+            </div>
+          );
+        }}
+      </EventFilter>
     );
   }
 }
