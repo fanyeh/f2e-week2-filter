@@ -13,10 +13,8 @@ class EventFilter extends Component {
   filter = {
     checkedCategories: [],
     price: '',
-    date: {
-      start: null,
-      end: null,
-    },
+    startDate: null,
+    endDate: null,
   };
 
   async componentDidMount() {
@@ -48,8 +46,8 @@ class EventFilter extends Component {
   };
 
   dateHandler = ({ startDate, endDate }) => {
-    this.filter.date.start = startDate ? startDate : null;
-    this.filter.date.end = endDate ? startDate : null;
+    this.filter.startDate = startDate ? startDate : null;
+    this.filter.endDate = endDate ? endDate : null;
     this.filterEvent();
   };
 
@@ -65,10 +63,6 @@ class EventFilter extends Component {
         priceHandler: this.priceHandler,
         categoryHandler: this.categoryHandler,
         dateHandler: this.dateHandler,
-      },
-      dates: {
-        start: this.filter.startDate,
-        end: this.filter.endDate,
       },
     };
   };

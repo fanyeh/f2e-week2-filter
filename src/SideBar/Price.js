@@ -21,7 +21,6 @@ class Price extends Component {
   };
 
   render() {
-    const { handler } = this.props;
     const { toggle, current } = this.state;
     return (
       <div>
@@ -83,6 +82,7 @@ const ListItem = styled.li`
   position: relative;
   list-style: none;
   line-height: 2.5rem;
+  user-select: none;
   cursor: pointer;
 
   & > i {

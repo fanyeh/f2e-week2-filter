@@ -7,21 +7,27 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import './react-datepicker.css';
 class SideBar extends Component {
-  state = { focusedInput: null };
+  state = { focusedInput: null, startDate: null, endDate: null };
+
+  changeHandler = ({ startDate, endDate }) => {
+    this.setState({ startDate, endDate });
+    this.props.handlers.dateHandler({ startDate, endDate });
+  };
 
   render() {
-    const { handlers, dates, categories } = this.props;
+    const { handlers, categories } = this.props;
+    const { focusedInput, startDate, endDate } = this.state;
     return (
       <SideBarSection>
         <Wrapper>
           <DateHeader>Date</DateHeader>
           <DateRangePicker
-            startDate={dates.start}
+            startDate={startDate}
             startDateId="eventStart"
-            endDate={dates.end}
+            endDate={endDate}
             endDateId="eventEnd"
-            onDatesChange={handlers.dateHandler}
-            focusedInput={this.state.focusedInput}
+            onDatesChange={this.changeHandler}
+            focusedInput={focusedInput}
             onFocusChange={focusedInput => this.setState({ focusedInput })}
           />
           <Price handler={handlers.priceHandler} />

@@ -38,12 +38,11 @@ export const getVenue = async id => {
   return response.data;
 };
 
-export const searchEventsWith = async ({ checkedCategories, price, date }) => {
+export const searchEventsWith = async ({ checkedCategories, price, startDate, endDate }) => {
   let categoryID = checkedCategories.join(',');
   const url = `${baseURL}/events/search/?${token}&categories=${categoryID}&price=${price}&location.address=taiwan&start_date.range_start=${convertUTC(
-    date.start,
-  )}&start_date.range_end=${convertUTC(date.end)}`;
-
+    startDate,
+  )}&start_date.range_end=${convertUTC(endDate)}`;
   const response = await requestData(url);
   return response.data;
 };
