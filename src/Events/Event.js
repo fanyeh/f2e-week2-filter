@@ -12,8 +12,7 @@ class Event extends Component {
 
   setVenue = async () => {
     const { venue_id } = this.props.event;
-    const response = await getVenue(venue_id);
-    const { address } = response.data;
+    const { address } = await getVenue(venue_id);
     this.setState({ city: address.city });
   };
 
@@ -23,10 +22,9 @@ class Event extends Component {
     const endDate = moment(end.local).format('YYYY/MM/DD');
     const endTime = moment(end.local).format('HH:mm');
 
-    if (startDate === endDate) {
-      return `${startDate} ${startTime} - ${endTime}`;
-    }
-    return `${startDate} ${startTime} - ${endDate} ${endTime}`;
+    return startDate === endDate
+      ? `${startDate} ${startTime} - ${endTime}`
+      : `${startDate} ${startTime} - ${endDate} ${endTime}`;
   };
 
   render() {
@@ -34,13 +32,13 @@ class Event extends Component {
     return (
       <Wrapper>
         {event.logo && <StyledImage src={event.logo.url} alt="" />}
-        <Content>
-          <Title>{event.name.text}</Title>
-          <Description>{event.description.text}</Description>
+        <EventContent>
+          <EventTitle>{event.name.text}</EventTitle>
+          <EventDescription>{event.description.text}</EventDescription>
           <TagWrapper>
-            {categoryTags.map((tag, index) => {
-              return tag ? <TagLabel key={index}>{tag}</TagLabel> : null;
-            })}
+            {categoryTags.map(
+              (tag, index) => (tag ? <TagLabel key={index}>{tag}</TagLabel> : null),
+            )}
           </TagWrapper>
           <div>
             {this.state.city && (
@@ -58,7 +56,7 @@ class Event extends Component {
               More Info
             </StyledLink>
           </div>
-        </Content>
+        </EventContent>
       </Wrapper>
     );
   }
@@ -72,19 +70,19 @@ const Wrapper = styled.div`
   margin-top: 1.5rem;
 `;
 
-const Content = styled.div`
+const EventContent = styled.div`
   padding: 1.5rem 1.25rem;
   background-color: white;
   display: flex;
   flex-direction: column;
 `;
 
-const Title = styled.h1`
+const EventTitle = styled.h1`
   margin: 0;
   font-size: 1.5rem;
 `;
 
-const Description = styled.p`
+const EventDescription = styled.p`
   height: 4.5rem;
   word-break: break-all;
   overflow: hidden;

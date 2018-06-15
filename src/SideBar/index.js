@@ -14,6 +14,7 @@ class SideBar extends Component {
     return (
       <SideBarSection>
         <Wrapper>
+          <DateHeader>Date</DateHeader>
           <DateRangePicker
             startDate={dates.start}
             startDateId="eventStart"
@@ -41,4 +42,11 @@ const SideBarSection = styled.section`
 
 const Wrapper = styled.div`
   background-color: #ebebeb;
+  padding: 0 2.5rem 1.5rem 2.5rem;
+`;
+
+const DateHeader = styled.h1`
+  padding-top: 1.5rem;
+  margin: 0;
+  margin-bottom: 1.5rem;
 `;

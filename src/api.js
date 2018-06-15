@@ -32,9 +32,10 @@ export const getSubCategories = async (page = 1, data = []) => {
   }
 };
 
-export const getVenue = id => {
+export const getVenue = async id => {
   const url = `${baseURL}/venues/${id}/?${token}`;
-  return requestData(url);
+  const response = await requestData(url);
+  return response.data;
 };
 
 export const searchEventsWith = async ({ checkedCategories, price, date }) => {

@@ -23,10 +23,6 @@ class EventFilter extends Component {
     this.init();
   }
 
-  /**
-   * Handlers
-   */
-
   init = async () => {
     const subCategories = await getSubCategories();
     const categories = await getCategories();
@@ -34,16 +30,19 @@ class EventFilter extends Component {
     this.setState({ categories, subCategories, events, pagination, loading: false });
   };
 
-  priceHandler = e => {
-    this.filter.price = e.target.value;
+  /**
+   * Handlers
+   */
+
+  priceHandler = value => {
+    this.filter.price = value;
     this.filterEvent();
   };
 
-  categoryHandler = e => {
+  categoryHandler = id => {
     const { checkedCategories } = this.filter;
-    const categoryID = e.target.value;
-    const indexOfID = checkedCategories.indexOf(categoryID);
-    indexOfID > -1 ? checkedCategories.splice(indexOfID, 1) : checkedCategories.push(categoryID);
+    const indexOfID = checkedCategories.indexOf(id);
+    indexOfID > -1 ? checkedCategories.splice(indexOfID, 1) : checkedCategories.push(id);
     this.filter.checkedCategories = checkedCategories;
     this.filterEvent();
   };

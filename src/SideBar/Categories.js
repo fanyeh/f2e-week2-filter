@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-
+import Category from './Category';
 class Categories extends Component {
   render() {
     const { categories, handler } = this.props;
     return (
       <div>
+        <h1>Categories</h1>
         {categories.map(category => (
-          <div key={category.id}>
-            <input type="checkbox" onChange={handler} value={category.id} />
-            <label>{category.short_name}</label>
-          </div>
+          <Category key={category.id} category={category} handler={handler} />
         ))}
       </div>
     );
