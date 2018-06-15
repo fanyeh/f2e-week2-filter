@@ -1,28 +1,38 @@
 import { Component } from 'react';
-import moment from 'moment';
-import { searchEventsWith } from './api';
+import { getCategories, getSubCategories, searchEventsWith } from './api';
 
 class EventFilter extends Component {
   state = {
-    data: {},
+    events: [],
+    pagination: { page_count: 0 },
+    categories: [],
+    subCategories: {},
+    loading: true,
   };
 
   filter = {
-    categories: [],
+    checkedCategories: [],
     price: '',
     date: {
-      start: '',
-      end: '',
+      start: null,
+      end: null,
     },
   };
 
-  componentDidMount() {
-    this.filterEvent();
+  async componentDidMount() {
+    this.init();
   }
 
   /**
    * Handlers
    */
+
+  init = async () => {
+    const subCategories = await getSubCategories();
+    const categories = await getCategories();
+    const { events, pagination } = await searchEventsWith(this.filter);
+    this.setState({ categories, subCategories, events, pagination, loading: false });
+  };
 
   priceHandler = e => {
     this.filter.price = e.target.value;
@@ -30,42 +40,42 @@ class EventFilter extends Component {
   };
 
   categoryHandler = e => {
-    const { categories } = this.filter;
+    const { checkedCategories } = this.filter;
     const categoryID = e.target.value;
-    const indexOfID = categories.indexOf(categoryID);
-    indexOfID > -1 ? categories.splice(indexOfID, 1) : categories.push(categoryID);
-    this.filter.categories = categories;
+    const indexOfID = checkedCategories.indexOf(categoryID);
+    indexOfID > -1 ? checkedCategories.splice(indexOfID, 1) : checkedCategories.push(categoryID);
+    this.filter.checkedCategories = checkedCategories;
     this.filterEvent();
   };
 
   dateHandler = ({ startDate, endDate }) => {
-    this.filter.date.start = startDate ? this.convertUTC(startDate) : '';
-    this.filter.date.end = endDate ? this.convertUTC(endDate) : '';
+    this.filter.date.start = startDate ? startDate : null;
+    this.filter.date.end = endDate ? startDate : null;
     this.filterEvent();
   };
 
   filterEvent = async () => {
-    const response = await searchEventsWith(this.filter);
-    this.setState({ data: response.data });
-  };
-
-  convertUTC = date => {
-    return moment.utc(date).format();
+    const { events, pagination } = await searchEventsWith(this.filter);
+    this.setState({ events, pagination });
   };
 
   childProps = () => {
-    const { events, pagination } = this.state.data;
     return {
-      events: events ? events : [],
-      pagination: pagination ? pagination : { page_count: 0 },
-      priceHandler: this.priceHandler,
-      categoryHandler: this.categoryHandler,
-      dateHandler: this.dateHandler,
+      ...this.state,
+      handlers: {
+        priceHandler: this.priceHandler,
+        categoryHandler: this.categoryHandler,
+        dateHandler: this.dateHandler,
+      },
+      dates: {
+        start: this.filter.startDate,
+        end: this.filter.endDate,
+      },
     };
   };
 
   render() {
-    return this.props.children(this.childProps());
+    return this.state.loading ? null : this.props.children(this.childProps());
   }
 }
 

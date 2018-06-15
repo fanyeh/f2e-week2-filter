@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { getVenue } from './api';
+import { getVenue } from '../api';
 
 class Event extends Component {
   state = { city: '' };
@@ -9,29 +9,6 @@ class Event extends Component {
   componentDidMount() {
     this.setVenue();
   }
-
-  getCategoryTag = id => {
-    const { categories } = this.props;
-    const category = categories.filter(category => category.id === id)[0];
-    if (category) {
-      return `#${category.name}`;
-    }
-  };
-
-  getSubCategoryTag = id => {
-    if (id) {
-      const { subCategories } = this.props;
-      const subCategory = subCategories[id];
-      if (subCategory) {
-        return `#${subCategories[id]}`;
-      }
-      return null;
-    }
-  };
-
-  getTags = event => {
-    return [this.getCategoryTag(event.category_id), this.getSubCategoryTag(event.subcategory_id)];
-  };
 
   setVenue = async () => {
     const { venue_id } = this.props.event;
@@ -53,7 +30,7 @@ class Event extends Component {
   };
 
   render() {
-    const { event } = this.props;
+    const { event, categoryTags } = this.props;
     return (
       <Wrapper>
         {event.logo && <StyledImage src={event.logo.url} alt="" />}
@@ -61,7 +38,7 @@ class Event extends Component {
           <Title>{event.name.text}</Title>
           <Description>{event.description.text}</Description>
           <TagWrapper>
-            {this.getTags(event).map((tag, index) => {
+            {categoryTags.map((tag, index) => {
               return tag ? <TagLabel key={index}>{tag}</TagLabel> : null;
             })}
           </TagWrapper>
