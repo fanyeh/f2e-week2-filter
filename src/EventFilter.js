@@ -20,7 +20,7 @@ class EventFilter extends Component {
   };
 
   async componentDidMount() {
-    // this.init();
+    this.init();
   }
 
   init = async () => {
@@ -62,7 +62,15 @@ class EventFilter extends Component {
     this.setState({ events, pagination });
   };
 
+  getCategoryTag = id => {
+    const { categories } = this.state;
+    return this.filter.checkedCategories.map(categoryID => {
+      return categories.filter(category => category.id === categoryID)[0].name;
+    });
+  };
+
   childProps = () => {
+    const priceTag = this.filter.price === '' ? 'free & paid' : this.filter.price;
     return {
       ...this.state,
       handlers: {
@@ -71,7 +79,7 @@ class EventFilter extends Component {
         dateHandler: this.dateHandler,
         queryHandler: this.queryHandler,
       },
-      // filterTags: [this.filter.price , ...this.filter.checkedCategories]
+      tags: [priceTag, ...this.getCategoryTag()],
     };
   };
 

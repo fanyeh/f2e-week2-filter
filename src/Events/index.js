@@ -6,7 +6,7 @@ class Events extends Component {
     const { categories } = this.props;
     const category = categories.filter(category => category.id === id)[0];
     if (category) {
-      return `#${category.name}`;
+      return category.name;
     }
   };
 
@@ -14,7 +14,7 @@ class Events extends Component {
     if (id) {
       const { subCategories } = this.props;
       const subCategory = subCategories[id];
-      return subCategory ? `#${subCategories[id]}` : null;
+      return subCategory ? subCategories[id] : null;
     }
     return null;
   };
@@ -24,9 +24,18 @@ class Events extends Component {
   };
 
   render() {
-    const { events } = this.props;
+    const { events, pagination, tags } = this.props;
     return (
       <EventSection>
+        <h1>
+          Showing <Counter>{pagination.object_count} </Counter>results by...
+        </h1>
+        {tags.map(tag => (
+          <TagLabel>
+            {tag}
+            <i className="far fa-times-circle" />
+          </TagLabel>
+        ))}
         {events.map(event => (
           <Event key={event.id} event={event} categoryTags={this.getTags(event)} />
         ))}
@@ -40,4 +49,22 @@ export default Events;
 const EventSection = styled.section`
   text-align: left;
   padding: 0 2.5rem;
+`;
+
+const TagLabel = styled.label`
+  background: none;
+  color: #9013fe;
+  border-radius: 9999px;
+  border: 1px solid #9013fe;
+  padding: 0.25rem 1rem;
+  margin-right: 0.75rem;
+  text-transform: capitalize;
+  font-style: italic;
+  & > i {
+    margin-left: 0.75rem;
+  }
+`;
+
+const Counter = styled.span`
+  color: #9013fe;
 `;

@@ -13,24 +13,20 @@ class App extends Component {
         {filter => (
           <div className="App">
             <Header handler={filter.handlers.queryHandler} />
-
             <StyledMain>
               <SideBar
                 handlers={filter.handlers}
                 dates={filter.dates}
                 categories={filter.categories}
               />
-              <div>
-                <h1>Showing {filter.pagination.object_count} results by...</h1>
-                <Events
-                  events={filter.events}
-                  categories={filter.categories}
-                  subCategories={filter.subCategories}
-                />
-              </div>
+              <Events
+                events={filter.events}
+                pagination={filter.pagination}
+                categories={filter.categories}
+                subCategories={filter.subCategories}
+                tags={filter.tags}
+              />
             </StyledMain>
-
-            <div>PageCount: {filter.pagination.page_count} pages</div>
           </div>
         )}
       </EventFilter>
