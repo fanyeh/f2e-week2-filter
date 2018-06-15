@@ -7,7 +7,7 @@ class EventFilter extends Component {
     pagination: { page_count: 0 },
     categories: [],
     subCategories: {},
-    loading: true,
+    loading: false,
   };
 
   filter = {
@@ -15,10 +15,12 @@ class EventFilter extends Component {
     price: '',
     startDate: null,
     endDate: null,
+    query: '',
+    country: 'taiwan',
   };
 
   async componentDidMount() {
-    this.init();
+    // this.init();
   }
 
   init = async () => {
@@ -31,6 +33,10 @@ class EventFilter extends Component {
   /**
    * Handlers
    */
+  queryHandler = value => {
+    this.filter.query = value;
+    this.filterEvent();
+  };
 
   priceHandler = value => {
     this.filter.price = value;
@@ -63,7 +69,9 @@ class EventFilter extends Component {
         priceHandler: this.priceHandler,
         categoryHandler: this.categoryHandler,
         dateHandler: this.dateHandler,
+        queryHandler: this.queryHandler,
       },
+      // filterTags: [this.filter.price , ...this.filter.checkedCategories]
     };
   };
 

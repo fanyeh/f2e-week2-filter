@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Events from './Events';
 import SideBar from './SideBar';
+import Header from './Header';
 import EventFilter from './EventFilter';
 import './App.css';
 
@@ -11,9 +12,7 @@ class App extends Component {
       <EventFilter>
         {filter => (
           <div className="App">
-            <StyledHeader>
-              <div>search input</div>
-            </StyledHeader>
+            <Header handler={filter.handlers.queryHandler} />
 
             <StyledMain>
               <SideBar
@@ -21,14 +20,16 @@ class App extends Component {
                 dates={filter.dates}
                 categories={filter.categories}
               />
-              <Events
-                events={filter.events}
-                categories={filter.categories}
-                subCategories={filter.subCategories}
-              />
+              <div>
+                <h1>Showing {filter.pagination.object_count} results by...</h1>
+                <Events
+                  events={filter.events}
+                  categories={filter.categories}
+                  subCategories={filter.subCategories}
+                />
+              </div>
             </StyledMain>
 
-            {/* Pagination */}
             <div>PageCount: {filter.pagination.page_count} pages</div>
           </div>
         )}
@@ -38,11 +39,6 @@ class App extends Component {
 }
 
 export default App;
-
-const StyledHeader = styled.header`
-  height: 5.75rem;
-  background-color: #7828b4;
-`;
 
 const StyledMain = styled.main`
   display: flex;
