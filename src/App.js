@@ -4,6 +4,7 @@ import Events from './Events';
 import SideBar from './SideBar';
 import Header from './Header';
 import EventFilter from './EventFilter';
+import Pagination from './Pagination';
 import './App.css';
 
 class App extends Component {
@@ -27,6 +28,7 @@ class App extends Component {
                 tags={filter.tags}
               />
             </StyledMain>
+            <Pagination />
           </div>
         )}
       </EventFilter>

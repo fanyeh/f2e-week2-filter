@@ -20,7 +20,7 @@ class EventFilter extends Component {
   };
 
   async componentDidMount() {
-    this.init();
+    // this.init();
   }
 
   init = async () => {
