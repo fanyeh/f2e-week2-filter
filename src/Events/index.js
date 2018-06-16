@@ -24,14 +24,14 @@ class Events extends Component {
   };
 
   render() {
-    const { events, pagination, tags } = this.props;
+    const { events, totalEvents, tags } = this.props;
     return (
       <EventSection>
         <h1>
-          Showing <Counter>{pagination.object_count} </Counter>results by...
+          Showing <Counter>{totalEvents} </Counter>results by...
         </h1>
-        {tags.map(tag => (
-          <TagLabel>
+        {tags.map((tag, index) => (
+          <TagLabel key={index}>
             {tag}
             <i className="far fa-times-circle" />
           </TagLabel>

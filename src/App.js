@@ -22,13 +22,18 @@ class App extends Component {
               />
               <Events
                 events={filter.events}
-                pagination={filter.pagination}
+                totalEvents={filter.totalEvents}
                 categories={filter.categories}
                 subCategories={filter.subCategories}
                 tags={filter.tags}
               />
             </StyledMain>
-            <Pagination />
+            <Pagination
+              pageCount={filter.pageCount}
+              eventsPerPage={filter.eventsPerPage}
+              currentPage={filter.currentPage}
+              handler={filter.handlers.pageHandler}
+            />
           </div>
         )}
       </EventFilter>

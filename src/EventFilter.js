@@ -4,10 +4,12 @@ import { getCategories, getSubCategories, searchEventsWith } from './api';
 class EventFilter extends Component {
   state = {
     events: [],
-    pagination: { page_count: 0 },
+    pagination: {},
     categories: [],
     subCategories: {},
-    loading: false,
+    loading: true,
+    currentPage: 1,
+    eventsPerPage: 3,
   };
 
   filter = {
@@ -20,7 +22,7 @@ class EventFilter extends Component {
   };
 
   async componentDidMount() {
-    // this.init();
+    this.init();
   }
 
   init = async () => {
@@ -57,9 +59,20 @@ class EventFilter extends Component {
     this.filterEvent();
   };
 
+  pageHandler = currentPage => {
+    this.setState({ currentPage });
+  };
+
+  eventsByPage = () => {
+    const { events, eventsPerPage, currentPage } = this.state;
+    const start = eventsPerPage * (currentPage - 1);
+    const end = start + eventsPerPage;
+    return events.slice(start, end);
+  };
+
   filterEvent = async () => {
     const { events, pagination } = await searchEventsWith(this.filter);
-    this.setState({ events, pagination });
+    this.setState({ events, pagination, currentPage: 1 });
   };
 
   getCategoryTag = id => {
@@ -71,13 +84,19 @@ class EventFilter extends Component {
 
   childProps = () => {
     const priceTag = this.filter.price === '' ? 'free & paid' : this.filter.price;
+    const { loading, pagination, events, eventsPerPage, ...props } = this.state;
     return {
-      ...this.state,
+      ...props,
+      eventsPerPage,
+      events: this.eventsByPage(),
+      totalEvents: pagination.object_count,
+      pageCount: Math.ceil(pagination.object_count / eventsPerPage),
       handlers: {
         priceHandler: this.priceHandler,
         categoryHandler: this.categoryHandler,
         dateHandler: this.dateHandler,
         queryHandler: this.queryHandler,
+        pageHandler: this.pageHandler,
       },
       tags: [priceTag, ...this.getCategoryTag()],
     };
