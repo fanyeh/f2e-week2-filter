@@ -66,7 +66,7 @@ export default Event;
 
 const Wrapper = styled.div`
   display: flex;
-  /* height: 16.75rem; */
+  height: 16.75rem;
   margin-top: 1.5rem;
 `;
 
@@ -75,6 +75,7 @@ const EventContent = styled.div`
   background-color: white;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const EventTitle = styled.h1`

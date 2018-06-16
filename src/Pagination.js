@@ -77,8 +77,8 @@ class Pagination extends Component {
   };
 
   prevPageHandler = () => {
-    const { currentPage, eventsPerPage, handler } = this.props;
-    if (currentPage <= this.state.pageCount - eventsPerPage) {
+    const { currentPage, eventsPerPage, handler, pageCount } = this.props;
+    if (currentPage <= pageCount - eventsPerPage) {
       const { pageBtns } = this.state;
       const lastPage = pageBtns.pop();
       pageBtns.unshift(lastPage - this.numOfPageBtns);
@@ -114,7 +114,7 @@ class Pagination extends Component {
           </PageButton>
         )}
 
-        {this.showMore('prev') && <label htmlFor="">...</label>}
+        {this.showMore('prev') && <StyleLabel htmlFor="">...</StyleLabel>}
 
         {pageBtns.map((page, index) => (
           <PageButton
@@ -127,7 +127,7 @@ class Pagination extends Component {
           </PageButton>
         ))}
 
-        {this.showMore('next') && <label htmlFor="">...</label>}
+        {this.showMore('next') && <StyleLabel htmlFor="">...</StyleLabel>}
 
         {showBothEndBtn && (
           <PageButton
@@ -163,4 +163,8 @@ const PageButton = styled.button`
   width: 2.5rem;
   height: 2.5rem;
   margin-left: 1px;
+`;
+
+const StyleLabel = styled.label`
+  margin: 0 0.5rem;
 `;

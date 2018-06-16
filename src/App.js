@@ -28,12 +28,14 @@ class App extends Component {
                 tags={filter.tags}
               />
             </StyledMain>
-            <Pagination
-              pageCount={filter.pageCount}
-              eventsPerPage={filter.eventsPerPage}
-              currentPage={filter.currentPage}
-              handler={filter.handlers.pageHandler}
-            />
+            <StyledFooter>
+              <Pagination
+                pageCount={filter.pageCount}
+                eventsPerPage={filter.eventsPerPage}
+                currentPage={filter.currentPage}
+                handler={filter.handlers.pageHandler}
+              />
+            </StyledFooter>
           </div>
         )}
       </EventFilter>
@@ -45,6 +47,12 @@ export default App;
 
 const StyledMain = styled.main`
   display: flex;
-  width: 90%;
   margin: 0 auto;
+  padding: 0 5.5rem;
+`;
+
+const StyledFooter = styled.div`
+  text-align: right;
+  margin: 0 auto;
+  padding: 1.5rem 8rem 1.5rem 0rem;
 `;
