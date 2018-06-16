@@ -4,7 +4,7 @@ import styled from 'styled-components';
 class Pagination extends Component {
   static defaultProps = {
     minPageBtns: 7,
-    eventsPerPage: 5,
+    itemsPerPage: 5,
   };
   constructor(props) {
     super(props);
@@ -66,8 +66,8 @@ class Pagination extends Component {
   };
 
   nextPageHandler = () => {
-    const { currentPage, eventsPerPage, handler } = this.props;
-    if (currentPage > eventsPerPage) {
+    const { currentPage, itemsPerPage, handler } = this.props;
+    if (currentPage > itemsPerPage) {
       const { pageBtns } = this.state;
       const firstPage = pageBtns.shift();
       pageBtns.push(firstPage + this.numOfPageBtns);
@@ -77,8 +77,8 @@ class Pagination extends Component {
   };
 
   prevPageHandler = () => {
-    const { currentPage, eventsPerPage, handler, pageCount } = this.props;
-    if (currentPage <= pageCount - eventsPerPage) {
+    const { currentPage, itemsPerPage, handler, pageCount } = this.props;
+    if (currentPage <= pageCount - itemsPerPage) {
       const { pageBtns } = this.state;
       const lastPage = pageBtns.pop();
       pageBtns.unshift(lastPage - this.numOfPageBtns);

@@ -31,7 +31,7 @@ class App extends Component {
             <StyledFooter>
               <Pagination
                 pageCount={filter.pageCount}
-                eventsPerPage={filter.eventsPerPage}
+                itemsPerPage={filter.eventsPerPage}
                 currentPage={filter.currentPage}
                 handler={filter.handlers.pageHandler}
               />

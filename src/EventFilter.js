@@ -4,7 +4,6 @@ import { getCategories, getSubCategories, searchEventsWith } from './api';
 class EventFilter extends Component {
   state = {
     events: [],
-    pagination: {},
     categories: [],
     subCategories: {},
     loading: true,
@@ -28,8 +27,8 @@ class EventFilter extends Component {
   init = async () => {
     const subCategories = await getSubCategories();
     const categories = await getCategories();
-    const { events, pagination } = await searchEventsWith(this.filter);
-    this.setState({ categories, subCategories, events, pagination, loading: false });
+    const { events } = await searchEventsWith(this.filter);
+    this.setState({ categories, subCategories, events, loading: false });
   };
 
   /**
@@ -71,8 +70,8 @@ class EventFilter extends Component {
   };
 
   filterEvent = async () => {
-    const { events, pagination } = await searchEventsWith(this.filter);
-    this.setState({ events, pagination, currentPage: 1 });
+    const { events } = await searchEventsWith(this.filter);
+    this.setState({ events, currentPage: 1 });
   };
 
   getCategoryTag = id => {
@@ -84,13 +83,14 @@ class EventFilter extends Component {
 
   childProps = () => {
     const priceTag = this.filter.price === '' ? 'free & paid' : this.filter.price;
-    const { loading, pagination, events, eventsPerPage, ...props } = this.state;
+    const { loading, events, eventsPerPage, ...props } = this.state;
+    const eventCount = events.length;
     return {
       ...props,
       eventsPerPage,
       events: this.eventsByPage(),
-      totalEvents: pagination.object_count,
-      pageCount: Math.ceil(pagination.object_count / eventsPerPage),
+      totalEvents: eventCount,
+      pageCount: Math.ceil(eventCount / eventsPerPage),
       handlers: {
         priceHandler: this.priceHandler,
         categoryHandler: this.categoryHandler,
