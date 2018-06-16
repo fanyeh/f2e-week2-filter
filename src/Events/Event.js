@@ -68,6 +68,12 @@ const Wrapper = styled.div`
   display: flex;
   height: 16.75rem;
   margin-top: 1.5rem;
+  transition: transform 400ms, box-shadow 400ms;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+  }
 `;
 
 const EventContent = styled.div`
@@ -81,6 +87,7 @@ const EventContent = styled.div`
 const EventTitle = styled.h1`
   margin: 0;
   font-size: 1.5rem;
+  color: #9013fe;
 `;
 
 const EventDescription = styled.p`

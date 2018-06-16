@@ -24,15 +24,15 @@ class Events extends Component {
   };
 
   render() {
-    const { events, totalEvents, tags } = this.props;
+    const { events, totalEvents, tags, handler } = this.props;
     return (
       <EventSection>
         <h1>
           Showing <Counter>{totalEvents} </Counter>results by...
         </h1>
-        {tags.map((tag, index) => (
-          <TagLabel key={index}>
-            {tag}
+        {tags.map(tag => (
+          <TagLabel key={tag.id} onClick={() => handler(tag.id)}>
+            {tag.name}
             <i className="far fa-times-circle" />
           </TagLabel>
         ))}
@@ -60,8 +60,14 @@ const TagLabel = styled.label`
   margin-right: 0.75rem;
   text-transform: capitalize;
   font-style: italic;
+  cursor: pointer;
   & > i {
     margin-left: 0.75rem;
+  }
+
+  &:hover {
+    background: #9013fe;
+    color: white;
   }
 `;
 

@@ -77,12 +77,11 @@ class EventFilter extends Component {
   getCategoryTag = id => {
     const { categories } = this.state;
     return this.filter.checkedCategories.map(categoryID => {
-      return categories.filter(category => category.id === categoryID)[0].name;
+      return categories.filter(category => category.id === categoryID)[0];
     });
   };
 
   childProps = () => {
-    const priceTag = this.filter.price === '' ? 'free & paid' : this.filter.price;
     const { loading, events, eventsPerPage, ...props } = this.state;
     const eventCount = events.length;
     return {
@@ -91,6 +90,7 @@ class EventFilter extends Component {
       events: this.eventsByPage(),
       totalEvents: eventCount,
       pageCount: Math.ceil(eventCount / eventsPerPage),
+      checkedCategories: this.filter.checkedCategories,
       handlers: {
         priceHandler: this.priceHandler,
         categoryHandler: this.categoryHandler,
@@ -98,7 +98,7 @@ class EventFilter extends Component {
         queryHandler: this.queryHandler,
         pageHandler: this.pageHandler,
       },
-      tags: [priceTag, ...this.getCategoryTag()],
+      tags: [...this.getCategoryTag()],
     };
   };
 

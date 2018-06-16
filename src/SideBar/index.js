@@ -15,7 +15,7 @@ class SideBar extends Component {
   };
 
   render() {
-    const { handlers, categories } = this.props;
+    const { handlers, categories, checkedCategories } = this.props;
     const { focusedInput, startDate, endDate } = this.state;
     return (
       <SideBarSection>
@@ -31,7 +31,11 @@ class SideBar extends Component {
             onFocusChange={focusedInput => this.setState({ focusedInput })}
           />
           <Price handler={handlers.priceHandler} />
-          <Categories categories={categories} handler={handlers.categoryHandler} />
+          <Categories
+            categories={categories}
+            handler={handlers.categoryHandler}
+            checkedCategories={checkedCategories}
+          />
         </Wrapper>
       </SideBarSection>
     );

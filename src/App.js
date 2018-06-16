@@ -19,8 +19,10 @@ class App extends Component {
                 handlers={filter.handlers}
                 dates={filter.dates}
                 categories={filter.categories}
+                checkedCategories={filter.checkedCategories}
               />
               <Events
+                handler={filter.handlers.categoryHandler}
                 events={filter.events}
                 totalEvents={filter.totalEvents}
                 categories={filter.categories}

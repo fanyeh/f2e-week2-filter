@@ -2,24 +2,15 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 class Category extends Component {
-  state = { checked: false };
-
-  toggleCheck = e => {
-    this.props.handler(e.target.value);
-    this.setState(({ checked }) => ({ checked: !checked }));
-  };
-
   render() {
-    const { category } = this.props;
-    const { checked } = this.state;
+    const { category, checked, handler } = this.props;
     return (
       <Wrapper>
         <StyledCheckbox
           type="checkbox"
           checked={checked}
-          onChange={this.toggleCheck}
+          onChange={() => handler(category.id)}
           id={category.id}
-          value={category.id}
         />
         <StyledCheckmark htmlFor={category.id} />
         <CategoryName>{category.short_name}</CategoryName>
