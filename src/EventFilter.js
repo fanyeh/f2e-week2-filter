@@ -6,7 +6,7 @@ class EventFilter extends Component {
     events: [],
     categories: [],
     subCategories: {},
-    loading: true,
+    loading: false,
     currentPage: 1,
     eventsPerPage: 3,
   };
@@ -21,7 +21,7 @@ class EventFilter extends Component {
   };
 
   async componentDidMount() {
-    this.init();
+    // this.init();
   }
 
   init = async () => {

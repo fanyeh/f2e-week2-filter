@@ -26,7 +26,7 @@ class Price extends Component {
       <div>
         <h1>Price</h1>
         <div>
-          <CustomSelect onClick={this.toggle}>
+          <CustomSelect onClick={this.toggle} onBlur={this.toggle}>
             {priceItems[current].name}
             <i className="fas fa-sort" />
           </CustomSelect>
@@ -50,16 +50,20 @@ class Price extends Component {
 
 export default Price;
 
-const CustomSelect = styled.div`
+const CustomSelect = styled.button`
+  padding: 0 0.7rem;
+  font-size: 1rem;
   width: 13.75rem;
   height: 2.5rem;
   line-height: 2.5rem;
   background-color: white;
   color: black;
   position: relative;
-  padding: 0 0.7rem;
   cursor: pointer;
-
+  outline: none;
+  border: none;
+  text-align: left;
+  box-sizing: border-box;
   & > i {
     float: right;
     line-height: 2.5rem;
@@ -67,6 +71,7 @@ const CustomSelect = styled.div`
 `;
 
 const StyledList = styled.ul`
+  box-sizing: border-box;
   position: absolute;
   padding: 0;
   margin: 0;
