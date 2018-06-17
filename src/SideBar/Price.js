@@ -9,15 +9,29 @@ const priceItems = [
 class Price extends Component {
   state = { toggle: false, current: 0 };
 
+  componentDidMount() {
+    window.addEventListener('click', this.close);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.close);
+  }
+
   clickHandler = e => {
     const index = e.target.id;
     const selectedValue = priceItems[index].value;
     this.props.handler(selectedValue);
     this.setState({ current: index * 1, toggle: false });
+    e.stopPropagation();
   };
 
-  toggle = () => {
+  close = () => {
+    this.setState({ toggle: false });
+  };
+
+  toggle = e => {
     this.setState(({ toggle }) => ({ toggle: !toggle }));
+    e.stopPropagation();
   };
 
   render() {
@@ -26,7 +40,7 @@ class Price extends Component {
       <div>
         <h1>Price</h1>
         <div>
-          <CustomSelect onClick={this.toggle} onBlur={this.toggle}>
+          <CustomSelect onClick={this.toggle}>
             {priceItems[current].name}
             <i className="fas fa-sort" />
           </CustomSelect>
@@ -36,7 +50,6 @@ class Price extends Component {
               {priceItems.map((item, index) => (
                 <ListItem key={item.name} id={index}>
                   {current === index && <i className="fas fa-check" />}
-
                   {item.name}
                 </ListItem>
               ))}
@@ -50,10 +63,11 @@ class Price extends Component {
 
 export default Price;
 
-const CustomSelect = styled.button`
+const CustomSelect = styled.div`
   padding: 0 0.7rem;
   font-size: 1rem;
   width: 234px;
+  line-height: 48px;
   height: 48px;
   background-color: white;
   color: black;
@@ -65,6 +79,7 @@ const CustomSelect = styled.button`
   box-sizing: border-box;
   & > i {
     float: right;
+    line-height: 48px;
   }
 `;
 
@@ -74,23 +89,31 @@ const StyledList = styled.ul`
   padding: 0;
   margin: 0;
   background-color: white;
-  width: 13.75rem;
+  border: 1px solid #dbdbdb;
+  width: 234px;
   color: black;
-  padding: 0 0.7rem;
   z-index: 5;
 `;
 
 const ListItem = styled.li`
-  padding-left: 1.5rem;
+  border-bottom: 1px solid #dbdbdb;
+  padding-left: 2.2rem;
   position: relative;
   list-style: none;
-  line-height: 2.5rem;
-  user-select: none;
+  line-height: 48px;
   cursor: pointer;
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: #9013fe;
+    color: white;
+  }
 
   & > i {
     position: absolute;
-    left: 0;
+    left: 0.7rem;
     top: 50%;
     transform: translateY(-50%);
   }
