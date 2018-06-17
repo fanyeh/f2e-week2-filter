@@ -53,20 +53,18 @@ export default Price;
 const CustomSelect = styled.button`
   padding: 0 0.7rem;
   font-size: 1rem;
-  width: 13.75rem;
-  height: 2.5rem;
-  line-height: 2.5rem;
+  width: 234px;
+  height: 48px;
   background-color: white;
   color: black;
   position: relative;
   cursor: pointer;
   outline: none;
-  border: none;
+  border: 1px solid #dbdbdb;
   text-align: left;
   box-sizing: border-box;
   & > i {
     float: right;
-    line-height: 2.5rem;
   }
 `;
 

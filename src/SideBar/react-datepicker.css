@@ -19,3 +19,21 @@
   background: #c737fc;
   border: 1px solid #d8b6f9;
 }
+
+.DateInput_input__focused {
+  border-color: #c737fc;
+}
+
+.DayPickerKeyboardShortcuts_buttonReset {
+  display: none;
+}
+
+.DateInput {
+  width: 104px;
+}
+
+.DateInput_input {
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-weight: 400;
+}
