@@ -1,12 +1,13 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { getCategories, getSubCategories, searchEventsWith } from './api';
+import Loader from './Loader';
 
 class EventFilter extends Component {
   state = {
     events: [],
     categories: [],
     subCategories: {},
-    loading: false,
+    loading: true,
     currentPage: 1,
     eventsPerPage: 3,
   };
@@ -21,7 +22,7 @@ class EventFilter extends Component {
   };
 
   async componentDidMount() {
-    // this.init();
+    this.init();
   }
 
   init = async () => {
@@ -103,7 +104,7 @@ class EventFilter extends Component {
   };
 
   render() {
-    return this.state.loading ? null : this.props.children(this.childProps());
+    return this.state.loading ? <Loader /> : this.props.children(this.childProps());
   }
 }
 
