@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { getCategories, getSubCategories, searchEventsWith } from './api';
-import Loader from './Loader';
+import React, {Component} from 'react'
+import {getCategories, getSubCategories, searchEventsWith} from './api'
+import Loader from './Loader'
 
 class EventFilter extends Component {
   state = {
@@ -9,8 +9,8 @@ class EventFilter extends Component {
     subCategories: {},
     loading: true,
     currentPage: 1,
-    eventsPerPage: 3,
-  };
+    eventsPerPage: 3
+  }
 
   filter = {
     checkedCategories: [],
@@ -18,73 +18,75 @@ class EventFilter extends Component {
     startDate: null,
     endDate: null,
     query: '',
-    country: 'taiwan',
-  };
+    country: 'new zealand'
+  }
 
   async componentDidMount() {
-    this.init();
+    this.init()
   }
 
   init = async () => {
-    const subCategories = await getSubCategories();
-    const categories = await getCategories();
-    const { events } = await searchEventsWith(this.filter);
-    this.setState({ categories, subCategories, events, loading: false });
-  };
+    const subCategories = await getSubCategories()
+    const categories = await getCategories()
+    const {events} = await searchEventsWith(this.filter)
+    this.setState({categories, subCategories, events, loading: false})
+  }
 
   /**
    * Handlers
    */
   queryHandler = value => {
-    this.filter.query = value;
-    this.filterEvent();
-  };
+    this.filter.query = value
+    this.filterEvent()
+  }
 
   priceHandler = value => {
-    this.filter.price = value;
-    this.filterEvent();
-  };
+    this.filter.price = value
+    this.filterEvent()
+  }
 
   categoryHandler = id => {
-    const { checkedCategories } = this.filter;
-    const indexOfID = checkedCategories.indexOf(id);
-    indexOfID > -1 ? checkedCategories.splice(indexOfID, 1) : checkedCategories.push(id);
-    this.filter.checkedCategories = checkedCategories;
-    this.filterEvent();
-  };
+    const {checkedCategories} = this.filter
+    const indexOfID = checkedCategories.indexOf(id)
+    indexOfID > -1
+      ? checkedCategories.splice(indexOfID, 1)
+      : checkedCategories.push(id)
+    this.filter.checkedCategories = checkedCategories
+    this.filterEvent()
+  }
 
-  dateHandler = ({ startDate, endDate }) => {
-    this.filter.startDate = startDate ? startDate : null;
-    this.filter.endDate = endDate ? endDate : null;
-    this.filterEvent();
-  };
+  dateHandler = ({startDate, endDate}) => {
+    this.filter.startDate = startDate ? startDate : null
+    this.filter.endDate = endDate ? endDate : null
+    this.filterEvent()
+  }
 
   pageHandler = currentPage => {
-    this.setState({ currentPage });
-  };
+    this.setState({currentPage})
+  }
 
   eventsByPage = () => {
-    const { events, eventsPerPage, currentPage } = this.state;
-    const start = eventsPerPage * (currentPage - 1);
-    const end = start + eventsPerPage;
-    return events.slice(start, end);
-  };
+    const {events, eventsPerPage, currentPage} = this.state
+    const start = eventsPerPage * (currentPage - 1)
+    const end = start + eventsPerPage
+    return events.slice(start, end)
+  }
 
   filterEvent = async () => {
-    const { events } = await searchEventsWith(this.filter);
-    this.setState({ events, currentPage: 1 });
-  };
+    const {events} = await searchEventsWith(this.filter)
+    this.setState({events, currentPage: 1})
+  }
 
   getCategoryTag = id => {
-    const { categories } = this.state;
+    const {categories} = this.state
     return this.filter.checkedCategories.map(categoryID => {
-      return categories.filter(category => category.id === categoryID)[0];
-    });
-  };
+      return categories.filter(category => category.id === categoryID)[0]
+    })
+  }
 
   childProps = () => {
-    const { loading, events, eventsPerPage, ...props } = this.state;
-    const eventCount = events.length;
+    const {loading, events, eventsPerPage, ...props} = this.state
+    const eventCount = events.length
     return {
       ...props,
       eventsPerPage,
@@ -97,15 +99,19 @@ class EventFilter extends Component {
         categoryHandler: this.categoryHandler,
         dateHandler: this.dateHandler,
         queryHandler: this.queryHandler,
-        pageHandler: this.pageHandler,
+        pageHandler: this.pageHandler
       },
-      tags: [...this.getCategoryTag()],
-    };
-  };
+      tags: [...this.getCategoryTag()]
+    }
+  }
 
   render() {
-    return this.state.loading ? <Loader /> : this.props.children(this.childProps());
+    return this.state.loading ? (
+      <Loader />
+    ) : (
+      this.props.children(this.childProps())
+    )
   }
 }
 
-export default EventFilter;
+export default EventFilter
